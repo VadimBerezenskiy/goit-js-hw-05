@@ -1,25 +1,68 @@
-const products = [
-  { name: 'Радар', price: 1300, quantity: 4 },
-  { name: 'Сканер', price: 2700, quantity: 3 },
-  { name: 'Дроид', price: 400, quantity: 7 },
-  { name: 'Захват', price: 1200, quantity: 2 },
-];
+class Car {
+  static getSpecs(car) {
+    console.log(car);
+  }
 
-const getAllPropValues = function (arr, prop) {
-  const value = [];
-  for (const product of arr) {
-    if (product[prop] !== undefined) {
-      value.push(product[prop]);
+  constructor({ speed = 0, price, maxSpeed, isOn = false, distance = 0 }) {
+    this.speed = speed;
+    this._price = price;
+    this.maxSpeed = maxSpeed;
+    this.isOn = isOn;
+    this.distance = distance;
+  }
+
+  get price() {
+    return this._price;
+  }
+
+  set price(value) {
+    this._price = value;
+  }
+
+  turnOn() {
+    this.isOn = true;
+  }
+
+  turnOff() {
+    this.isOn = false;
+    this.speed = 0;
+  }
+
+  accelerate(value) {
+    if (this.speed < this.maxSpeed) {
+      this.speed += value;
     }
   }
-  return value;
-};
 
-/*
- * Вызовы функции для проверки работоспособности твоей реализации.
- */
-console.log(getAllPropValues(products, 'name')); // ['Радар', 'Сканер', 'Дроид', 'Захват']
+  decelerate(value) {
+    if (this.speed > 0) {
+      this.speed -= value;
+    }
+  }
 
-console.log(getAllPropValues(products, 'quantity')); // [4, 3, 7, 2]
+  drive(hours) {
+    if (this.isOn) {
+      this.distance = hours * this.speed + this.distance;
+    }
+  }
+}
 
-console.log(getAllPropValues(products, 'category')); // []
+const mustang = new Car({ maxSpeed: 200, price: 2000 });
+
+mustang.turnOn();
+mustang.accelerate(50);
+mustang.drive(2);
+
+Car.getSpecs(mustang);
+// maxSpeed: 200, speed: 50, isOn: true, distance: 100, price: 2000
+
+mustang.decelerate(20);
+mustang.drive(1);
+mustang.turnOff();
+
+Car.getSpecs(mustang);
+// maxSpeed: 200, speed: 0, isOn: false, distance: 130, price: 2000
+
+console.log(mustang.price); // 2000
+mustang.price = 4000;
+console.log(mustang.price); // 4000

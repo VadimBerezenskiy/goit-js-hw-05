@@ -8,13 +8,13 @@ class StringBuilder {
   }
 
   append(str) {
-    return this._value + str;
+    this._value += str;
   }
   prepend(str) {
-    return str + this._value;
+    this._value = str.concat(this._value);
   }
   pad(str) {
-    return str + this._value + str;
+    this._value = str.concat(this._value, str);
   }
 }
 
